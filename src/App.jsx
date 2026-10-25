@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Header from './components/Header.jsx'
 import GroupsSection from './pages/GroupsSection.jsx'
+import HomePage from './pages/HomePage.jsx'
 import PayoutsPage from './pages/PayoutsPage.jsx'
 
 const PAGES = {
@@ -46,13 +47,7 @@ export default function App() {
   return (
     <div className="app">
       <Header sections={SECTIONS} active={route.section} onHome={goHome} />
-      {Page ? (
-        <Page param={route.param} />
-      ) : (
-        <main className="hero">
-          <h1 className="hero__logo">gudini</h1>
-        </main>
-      )}
+      {Page ? <Page param={route.param} /> : <HomePage />}
     </div>
   )
 }
