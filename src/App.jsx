@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import Header from './components/Header.jsx'
 import DevicesPage from './pages/DevicesPage.jsx'
+import PayoutsPage from './pages/PayoutsPage.jsx'
+
+const PAGES = {
+  devices: DevicesPage,
+  payouts: PayoutsPage,
+}
 
 // Разделы верхнего меню. Новый раздел — просто новая строка здесь.
 const SECTIONS = [
@@ -32,11 +38,13 @@ export default function App() {
     }
   }
 
+  const Page = PAGES[active]
+
   return (
     <div className="app">
       <Header sections={SECTIONS} active={active} onSelect={select} />
-      {active === 'devices' ? (
-        <DevicesPage />
+      {Page ? (
+        <Page />
       ) : (
         <main className="hero">
           <h1 className="hero__logo">gudini</h1>
