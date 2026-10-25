@@ -3,7 +3,7 @@ export default function Header({ sections, active, onSelect }) {
     <header className="header">
       <a
         className="header__logo"
-        href="/"
+        href={import.meta.env.BASE_URL}
         onClick={(e) => {
           e.preventDefault()
           onSelect(null)
