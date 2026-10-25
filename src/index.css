@@ -213,6 +213,90 @@ body {
   box-shadow: inset 0 0 0 1px var(--border);
 }
 
+.page__back {
+  margin-bottom: 12px;
+}
+
+.link-btn {
+  padding: 0;
+  border: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: none;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  color: var(--text);
+}
+
+.link-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Список групп */
+.groups {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.group-card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.group-card:hover {
+  border-color: rgba(139, 92, 246, 0.5);
+  background: rgba(139, 92, 246, 0.06);
+}
+
+.group-card__main {
+  width: 100%;
+  padding: 20px 52px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  border: none;
+  border-radius: inherit;
+  font: inherit;
+  text-align: left;
+  color: var(--text);
+  background: none;
+  cursor: pointer;
+}
+
+.group-card__main:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.group-card__name {
+  font-size: 17px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.group-card__meta {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.group-card__remove {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
 /* Список заявок */
 .requests {
   list-style: none;

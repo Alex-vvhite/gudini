@@ -1,26 +1,25 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import AddUserModal from '../components/AddUserModal.jsx'
-import { BANKS, METHODS, formatCard, formatPhone, labelOf, loadUsers, saveUsers } from '../users.js'
+import { BANKS, METHODS, formatCard, formatPhone, labelOf } from '../users.js'
 
-export default function DevicesPage() {
-  const [users, setUsers] = useState(loadUsers)
+export default function GroupPage({ group, onBack, onAddUser, onRemoveUser }) {
   const [modalOpen, setModalOpen] = useState(false)
-
-  useEffect(() => saveUsers(users), [users])
+  const { users } = group
 
   const closeModal = useCallback(() => setModalOpen(false), [])
 
   const addUser = (user) => {
-    setUsers((list) => [...list, user])
+    onAddUser(user)
     setModalOpen(false)
   }
 
-  const removeUser = (id) => setUsers((list) => list.filter((u) => u.id !== id))
-
   return (
     <main className="page">
+      <button className="link-btn page__back" onClick={onBack}>
+        ← Все группы
+      </button>
       <div className="page__head">
-        <h1 className="page__title">Устройства</h1>
+        <h1 className="page__title">{group.name}</h1>
         <button className="btn btn--primary" onClick={() => setModalOpen(true)}>
           + Добавить юзера
         </button>
@@ -28,7 +27,7 @@ export default function DevicesPage() {
 
       {users.length === 0 ? (
         <div className="empty">
-          <p>Пока нет ни одного юзера.</p>
+          <p>В этой группе пока нет юзеров.</p>
           <p className="empty__hint">Нажмите «Добавить юзера» в правом верхнем углу.</p>
         </div>
       ) : (
@@ -61,7 +60,7 @@ export default function DevicesPage() {
                       className="icon-btn"
                       aria-label={`Удалить ${u.name}`}
                       title="Удалить"
-                      onClick={() => removeUser(u.id)}
+                      onClick={() => onRemoveUser(u.id)}
                     >
                       ×
                     </button>

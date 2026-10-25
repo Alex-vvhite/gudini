@@ -1,50 +1,53 @@
 import { useEffect, useState } from 'react'
 import Header from './components/Header.jsx'
-import DevicesPage from './pages/DevicesPage.jsx'
+import GroupsSection from './pages/GroupsSection.jsx'
 import PayoutsPage from './pages/PayoutsPage.jsx'
 
 const PAGES = {
-  devices: DevicesPage,
+  groups: GroupsSection,
   payouts: PayoutsPage,
 }
 
 // Разделы верхнего меню. Новый раздел — просто новая строка здесь.
 const SECTIONS = [
-  { id: 'devices', label: 'Устройства' },
+  { id: 'groups', label: 'Группы' },
   { id: 'payouts', label: 'Выплаты' },
 ]
 
-// Текущий раздел берётся из адреса (#devices), чтобы он сохранялся при перезагрузке.
-function readSection() {
-  const id = window.location.hash.slice(1)
-  return SECTIONS.some((s) => s.id === id) ? id : null
+// Старые адреса, которые ведут на новые разделы.
+const RENAMED = { devices: 'groups' }
+
+// Адрес вида #groups/<id>: раздел и необязательный параметр внутри него.
+// Берётся из адреса, чтобы открытый экран сохранялся при перезагрузке.
+function readRoute() {
+  const [rawSection, param = null] = window.location.hash.slice(1).split('/')
+  const section = RENAMED[rawSection] ?? rawSection
+  return SECTIONS.some((s) => s.id === section)
+    ? { section, param: param && decodeURIComponent(param) }
+    : { section: null, param: null }
 }
 
 export default function App() {
-  const [active, setActive] = useState(readSection)
+  const [route, setRoute] = useState(readRoute)
 
   useEffect(() => {
-    const onHashChange = () => setActive(readSection())
+    const onHashChange = () => setRoute(readRoute())
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
-  const select = (id) => {
-    if (id) {
-      window.location.hash = id
-    } else {
-      history.pushState(null, '', window.location.pathname)
-      setActive(null)
-    }
+  const goHome = () => {
+    history.pushState(null, '', window.location.pathname)
+    setRoute({ section: null, param: null })
   }
 
-  const Page = PAGES[active]
+  const Page = PAGES[route.section]
 
   return (
     <div className="app">
-      <Header sections={SECTIONS} active={active} onSelect={select} />
+      <Header sections={SECTIONS} active={route.section} onHome={goHome} />
       {Page ? (
-        <Page />
+        <Page param={route.param} />
       ) : (
         <main className="hero">
           <h1 className="hero__logo">gudini</h1>

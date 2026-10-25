@@ -40,22 +40,35 @@ export function formatPhone(digits) {
 
 export const formatCard = (digits) => digits.replace(/(\d{4})(?=\d)/g, '$1 ')
 
-// Пользователи пока хранятся только в этом браузере, бэкенда ещё нет.
-const STORAGE_KEY = 'gudini.users'
+// Группы с юзерами пока хранятся только в этом браузере, бэкенда ещё нет.
+const STORAGE_KEY = 'gudini.groups'
+// До появления групп юзеры лежали плоским списком под этим ключом.
+const LEGACY_USERS_KEY = 'gudini.users'
 
-export function loadUsers() {
+function readJson(key) {
   try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY))
-    return Array.isArray(parsed) ? parsed : []
+    return JSON.parse(localStorage.getItem(key))
   } catch {
-    return []
+    return null
   }
 }
 
-export function saveUsers(users) {
+export function loadGroups() {
+  const groups = readJson(STORAGE_KEY)
+  if (Array.isArray(groups)) return groups
+
+  const legacy = readJson(LEGACY_USERS_KEY)
+  if (Array.isArray(legacy) && legacy.length) {
+    return [{ id: crypto.randomUUID(), name: 'Группа 1', users: legacy }]
+  }
+  return []
+}
+
+export function saveGroups(groups) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(users))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(groups))
+    localStorage.removeItem(LEGACY_USERS_KEY)
   } catch {
-    // Хранилище недоступно (приватный режим) — список просто живёт до перезагрузки.
+    // Хранилище недоступно (приватный режим) — данные просто живут до перезагрузки.
   }
 }

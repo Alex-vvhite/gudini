@@ -1,4 +1,4 @@
-export default function Header({ sections, active, onSelect }) {
+export default function Header({ sections, active, onHome }) {
   return (
     <header className="header">
       <a
@@ -6,7 +6,7 @@ export default function Header({ sections, active, onSelect }) {
         href={import.meta.env.BASE_URL}
         onClick={(e) => {
           e.preventDefault()
-          onSelect(null)
+          onHome()
         }}
       >
         gudini
