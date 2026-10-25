@@ -467,6 +467,17 @@ body {
   color-scheme: dark;
 }
 
+/* Раскрытый список рисует браузер, и не все браузеры берут тёмную тему от color-scheme:
+   без явных цветов светлый текст оказывается на белом фоне. */
+.field__input option {
+  color: var(--text);
+  background: #15151c;
+}
+
+.field__input option:disabled {
+  color: var(--text-muted);
+}
+
 .field__input:focus {
   outline: none;
   border-color: var(--accent);
